@@ -23,7 +23,7 @@ export default function Taskbar() {
           className="w-10 h-10 rounded-xl bg-white/30 hover:bg-white/50 transition flex items-center justify-center text-xl"
           title={app.title}
         >
-          {app.icon}
+          <span className="text-white text-lg">{app.icon}</span>
         </button>
       ))}
     </div>
