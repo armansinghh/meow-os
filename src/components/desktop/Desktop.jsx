@@ -6,9 +6,12 @@ import Taskbar from "@/components/taskbar/Taskbar"
 export default function Desktop() {
   const windows = useWindowStore((state) => state.windows)
   const wallpaper = useWindowStore((state) => state.wallpaper)
-  
+
   return (
-    <div className={`w-screen h-screen bg-linear-to-br ${wallpaper} relative overflow-hidden`}>
+    <div
+      className="w-screen h-screen relative overflow-hidden bg-cover bg-center"
+      style={{ backgroundImage: `url(${wallpaper})` }}
+    >
       {windows
         .filter((w) => !w.minimized)
         .map((w) => (

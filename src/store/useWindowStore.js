@@ -3,8 +3,14 @@ import { create } from "zustand";
 const useWindowStore = create((set) => ({
   windows: [],
 
-  wallpaper: "from-pink-300 via-purple-300 to-blue-300",
-  setWallpaper: (wallpaper) => set({ wallpaper }),
+  wallpaper:
+    localStorage.getItem("meowos-wallpaper") ||
+    "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80",
+
+  setWallpaper: (url) => {
+    localStorage.setItem("meowos-wallpaper", url);
+    set({ wallpaper: url });
+  },
 
   openWindow: (app) =>
     set((state) => ({
