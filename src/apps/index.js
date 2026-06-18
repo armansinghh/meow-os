@@ -1,3 +1,4 @@
+import Settings from "./Settings"
 import TextEditor from "./TextEditor"
 import Terminal from "./Terminal"
 import Clock from "./Clock"
@@ -21,6 +22,12 @@ const apps = [
     icon: "🕐",
     component: Clock,
   },
+  {
+    id: "settings",
+    title: "Settings",
+    icon: "⚙️",
+    component: Settings,
+  }
 ]
 
 export default apps
