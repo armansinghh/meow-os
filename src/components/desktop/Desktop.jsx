@@ -1,12 +1,13 @@
 "use client"
 import useWindowStore from "@/store/useWindowStore"
 import Window from "@/components/windows/Window"
+import Taskbar from "@/components/taskbar/Taskbar"
 
 export default function Desktop() {
   const windows = useWindowStore((state) => state.windows)
 
   return (
-    <div className="w-screen h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 relative overflow-hidden">
+    <div className="w-screen h-screen bg-linear-to-br from-pink-300 via-purple-300 to-blue-300 relative overflow-hidden">
       {windows
         .filter((w) => !w.minimized)
         .map((w) => (
@@ -23,6 +24,7 @@ export default function Desktop() {
             <w.component />
           </Window>
         ))}
+      <Taskbar />
     </div>
   )
 }
