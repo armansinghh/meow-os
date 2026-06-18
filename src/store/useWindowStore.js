@@ -4,8 +4,10 @@ const useWindowStore = create((set) => ({
   windows: [],
 
   wallpaper:
-    localStorage.getItem("meowos-wallpaper") ||
-    "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80",
+    typeof window !== "undefined"
+      ? localStorage.getItem("meowos-wallpaper") ||
+        "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80"
+      : "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80",
 
   setWallpaper: (url) => {
     localStorage.setItem("meowos-wallpaper", url);
