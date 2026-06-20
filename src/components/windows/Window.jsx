@@ -1,10 +1,20 @@
 "use client"
 import { Rnd } from "react-rnd"
 import { motion } from "framer-motion"
+import { FiX, FiMinus, FiMaximize2 } from "react-icons/fi"
 import useWindowStore from "@/store/useWindowStore"
+import { useEffect, useState } from "react"
 
-export default function Window({ id, title, children, x, y, width, height, zIndex }) {
-  const { closeWindow, focusWindow, minimizeWindow, windows } = useWindowStore()
+export default function Window({ id, title, children, x, y, width, height, zIndex, maximized }) {
+  const { closeWindow, focusWindow, minimizeWindow, maximizeWindow, windows } = useWindowStore()
+  const [screenSize, setScreenSize] = useState({ width: 1280, height: 720 })
+
+  useEffect(() => {
+    const update = () => setScreenSize({ width: window.innerWidth, height: window.innerHeight })
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
 
   const maxZ = Math.max(...windows.map((w) => w.zIndex))
   const isFocused = zIndex === maxZ
@@ -12,9 +22,13 @@ export default function Window({ id, title, children, x, y, width, height, zInde
   return (
     <Rnd
       default={{ x, y, width, height }}
+      position={maximized ? { x: 0, y: 0 } : undefined}
+      size={maximized ? { width: screenSize.width, height: screenSize.height - 48 } : undefined}
       minWidth={300}
       minHeight={200}
-      style={{ zIndex }}
+      style={{ zIndex, transition: maximized ? "all 0.2s ease" : "none" }}
+      disableDragging={maximized}
+      enableResizing={!maximized}
       onMouseDown={() => focusWindow(id)}
     >
       <motion.div
@@ -22,22 +36,34 @@ export default function Window({ id, title, children, x, y, width, height, zInde
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.15 }}
-        className={`w-full h-full rounded-xl shadow-2xl flex flex-col overflow-hidden border transition-all duration-150 ${
-          isFocused
-            ? "border-white/60 shadow-white/20"
-            : "border-white/20 opacity-90"
-        }`}
+        style={{ transition: "width 0.2s ease, height 0.2s ease" }}
+        className={`w-full h-full rounded-xl shadow-2xl flex flex-col overflow-hidden border transition-all duration-150 ${isFocused ? "border-white/60" : "border-white/20 opacity-90"
+          }`}
       >
         {/* Title bar */}
-        <div className={`flex items-center justify-between px-3 py-2 border-b transition-all duration-150 ${
-          isFocused
-            ? "bg-white/90 border-gray-200"
-            : "bg-white/50 border-gray-200/50"
-        }`}>
+        <div className={`flex items-center justify-between px-3 h-9 border-b transition-all duration-150 ${isFocused ? "bg-white/90 border-gray-200" : "bg-white/50 border-gray-200/50"}`}>
           <span className="text-sm font-semibold text-gray-700">{title}</span>
-          <div className="flex gap-2">
-            <button onClick={() => minimizeWindow(id)} className="w-3 h-3 rounded-full bg-yellow-400 hover:bg-yellow-500" />
-            <button onClick={() => closeWindow(id)} className="w-3 h-3 rounded-full bg-red-400 hover:bg-red-500" />
+
+          {/* Window controls */}
+          <div className="flex items-stretch h-full -mr-3">
+            <button
+              onClick={() => minimizeWindow(id)}
+              className="px-4 h-full flex items-center justify-center hover:bg-black/10 transition text-gray-500 hover:text-gray-800"
+            >
+              <FiMinus size={13} />
+            </button>
+            <button
+              onClick={() => maximizeWindow(id)}
+              className="px-4 h-full flex items-center justify-center hover:bg-black/10 transition text-gray-500 hover:text-gray-800"
+            >
+              <FiMaximize2 size={13} />
+            </button>
+            <button
+              onClick={() => closeWindow(id)}
+              className="px-4 h-full flex items-center justify-center hover:bg-red-500 hover:text-white transition text-gray-500 rounded-tr-xl"
+            >
+              <FiX size={13} />
+            </button>
           </div>
         </div>
 

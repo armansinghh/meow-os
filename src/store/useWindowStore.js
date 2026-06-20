@@ -63,6 +63,13 @@ const useWindowStore = create((set) => ({
         w.id === id ? { ...w, minimized: !w.minimized } : w,
       ),
     })),
+
+  maximizeWindow: (id) =>
+    set((state) => ({
+      windows: state.windows.map((w) =>
+        w.id === id ? { ...w, maximized: !w.maximized } : w,
+      ),
+    })),
 }));
 
 export default useWindowStore;

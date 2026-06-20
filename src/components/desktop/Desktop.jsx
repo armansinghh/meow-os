@@ -24,6 +24,7 @@ export default function Desktop() {
             width={w.width}
             height={w.height}
             zIndex={w.zIndex}
+            maximized={w.maximized}
           >
             <w.component />
           </Window>
