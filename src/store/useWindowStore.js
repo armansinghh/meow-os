@@ -15,22 +15,34 @@ const useWindowStore = create((set) => ({
   },
 
   openWindow: (app) =>
-    set((state) => ({
-      windows: [
-        ...state.windows,
-        {
-          id: app.id,
-          title: app.title,
-          component: app.component,
-          x: 100,
-          y: 100,
-          width: 600,
-          height: 400,
-          minimized: false,
-          zIndex: state.windows.length + 1,
-        },
-      ],
-    })),
+    set((state) => {
+      const existing = state.windows.find((w) => w.id === app.id);
+      if (existing) {
+        return {
+          windows: state.windows.map((w) =>
+            w.id === app.id ? { ...w, minimized: false } : w,
+          ),
+        };
+      }
+
+      const offset = state.windows.length * 24;
+      return {
+        windows: [
+          ...state.windows,
+          {
+            id: app.id,
+            title: app.title,
+            component: app.component,
+            x: 100 + offset,
+            y: 80 + offset,
+            width: 600,
+            height: 400,
+            minimized: false,
+            zIndex: state.windows.length + 1,
+          },
+        ],
+      };
+    }),
 
   closeWindow: (id) =>
     set((state) => ({
