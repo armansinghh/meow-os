@@ -1,12 +1,19 @@
 "use client"
 import { motion } from "framer-motion"
-import { FaCat } from "react-icons/fa6"
+import { FaPaw, FaCat, FaPowerOff } from "react-icons/fa6"
 import { FiX } from "react-icons/fi"
+import { useRouter } from "next/navigation"
 import apps from "@/apps"
 import useWindowStore from "@/store/useWindowStore"
 
 export default function PawMenu({ onClose }) {
+  const router = useRouter()
   const { openWindow, windows, minimizeWindow } = useWindowStore()
+
+  const handleShutdown = () => {
+    sessionStorage.removeItem("meowos-booted")
+    router.push("/shutdown")
+  }
 
   const handleAppClick = (app) => {
     const isOpen = windows.find((w) => w.id === app.id)
@@ -47,6 +54,18 @@ export default function PawMenu({ onClose }) {
           </button>
         ))}
       </div>
+
+      {/* Divider */}
+      <div className="w-full h-px bg-white/20" />
+
+      {/* Shutdown */}
+      <button
+        onClick={handleShutdown}
+        className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-red-500/20 transition text-sm text-left text-red-400 w-full"
+      >
+        <FaPowerOff className="text-base" />
+        <span>Shut down</span>
+      </button>
     </motion.div>
   )
 }
