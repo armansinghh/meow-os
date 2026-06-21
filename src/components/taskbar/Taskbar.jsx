@@ -20,7 +20,6 @@ export default function Taskbar() {
 
   return (
     <>
-      {/* Modals */}
       {trayOpen && <TrayModal onClose={() => setTrayOpen(false)} />}
       {pawOpen && <PawMenu onClose={() => setPawOpen(false)} />}
 
@@ -36,18 +35,37 @@ export default function Taskbar() {
           </button>
         </div>
 
-        {/* Middle — app icons */}
+        {/* Middle — app icons with dot indicators */}
         <div className="flex items-center gap-2">
-          {apps.map((app) => (
-            <button
-              key={app.id}
-              onClick={() => handleAppClick(app)}
-              className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/25 transition flex items-center justify-center text-white text-base"
-              title={app.title}
-            >
-              {app.icon}
-            </button>
-          ))}
+          {apps.map((app) => {
+            const win = windows.find((w) => w.id === app.id)
+            const isOpen = !!win
+            const isMinimized = win?.minimized
+
+            return (
+              <div key={app.id} className="flex flex-col items-center gap-0.5">
+                <button
+                  onClick={() => handleAppClick(app)}
+                  className={`w-9 h-9 rounded-lg transition flex items-center justify-center text-white text-base ${
+                    isOpen && !isMinimized
+                      ? "bg-white/30"
+                      : "bg-white/10 hover:bg-white/25"
+                  }`}
+                  title={app.title}
+                >
+                  {app.icon}
+                </button>
+                {/* Dot indicator */}
+                <div className={`w-1 h-1 rounded-full transition-all duration-300 ${
+                  isOpen
+                    ? isMinimized
+                      ? "bg-white/40"
+                      : "bg-white"
+                    : "bg-transparent"
+                }`} />
+              </div>
+            )
+          })}
         </div>
 
         {/* Right — system tray */}

@@ -8,7 +8,13 @@ import { useEffect, useState } from "react"
 export default function Window({ id, title, children, x, y, width, height, zIndex, maximized }) {
   const { closeWindow, focusWindow, minimizeWindow, maximizeWindow, windows } = useWindowStore()
   const [screenSize, setScreenSize] = useState({ width: 1280, height: 720 })
+  const [isAnimating, setIsAnimating] = useState(false)
 
+  const handleMaximize = () => {
+    setIsAnimating(true)
+    maximizeWindow(id)
+    setTimeout(() => setIsAnimating(false), 200)
+  }
   useEffect(() => {
     const update = () => setScreenSize({ width: window.innerWidth, height: window.innerHeight })
     update()
@@ -26,17 +32,20 @@ export default function Window({ id, title, children, x, y, width, height, zInde
       size={maximized ? { width: screenSize.width, height: screenSize.height - 48 } : undefined}
       minWidth={300}
       minHeight={200}
-      style={{ zIndex, transition: maximized ? "all 0.2s ease" : "none" }}
+      style={{
+        zIndex,
+        transition: isAnimating ? "width 0.2s ease, height 0.2s ease, transform 0.2s ease" : "none"
+      }}
       disableDragging={maximized}
       enableResizing={!maximized}
       onMouseDown={() => focusWindow(id)}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.15 }}
-        style={{ transition: "width 0.2s ease, height 0.2s ease" }}
+        initial={{ opacity: 0, scale: 0.95, y: 0 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.6, y: 100 }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
+        style={{ transition: "width 0.2s ease, height 0.2s ease " }}
         className={`w-full h-full rounded-xl shadow-2xl flex flex-col overflow-hidden border transition-all duration-150 ${isFocused ? "border-white/60" : "border-white/20 opacity-90"
           }`}
       >
@@ -53,7 +62,7 @@ export default function Window({ id, title, children, x, y, width, height, zInde
               <FiMinus size={13} />
             </button>
             <button
-              onClick={() => maximizeWindow(id)}
+              onClick={handleMaximize}
               className="px-4 h-full flex items-center justify-center hover:bg-black/10 transition text-gray-500 hover:text-gray-800"
             >
               <FiMaximize2 size={13} />
