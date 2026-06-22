@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import useWindowStore from "@/store/useWindowStore"
 import apps from "@/apps"
 import { FaPaw } from "react-icons/fa6"
@@ -8,30 +9,47 @@ import TrayModal from "./components/TrayModal"
 import PawMenu from "./components/PawMenu"
 
 export default function Taskbar() {
-  const { openWindow, windows, minimizeWindow } = useWindowStore()
+  const { openWindow, windows, minimizeWindow, focusWindow } = useWindowStore()
   const [trayOpen, setTrayOpen] = useState(false)
   const [pawOpen, setPawOpen] = useState(false)
 
   const handleAppClick = (app) => {
-    const isOpen = windows.find((w) => w.id === app.id)
-    if (isOpen) minimizeWindow(app.id)
-    else openWindow(app)
+    const win = windows.find((w) => w.id === app.id)
+
+    if (!win) {
+      openWindow(app)
+    } else {
+      if (win.minimized) {
+        minimizeWindow(app.id)
+        focusWindow(app.id)
+      } else {
+        const maxZ = Math.max(...windows.map((w) => w.zIndex), 0)
+        if (win.zIndex === maxZ) {
+          minimizeWindow(app.id)
+        } else {
+          focusWindow(app.id)
+        }
+      }
+    }
   }
 
   return (
     <>
-      {trayOpen && <TrayModal onClose={() => setTrayOpen(false)} />}
-      {pawOpen && <PawMenu onClose={() => setPawOpen(false)} />}
+      <AnimatePresence>
+        {trayOpen && <TrayModal key="tray" onClose={() => setTrayOpen(false)} />}
+        {pawOpen && <PawMenu key="paw" onClose={() => setPawOpen(false)} />}
+      </AnimatePresence>
 
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-black/40 backdrop-blur-md border-t border-white/10 flex items-center px-4">
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-black/40 backdrop-blur-md border-t border-white/10 flex items-center px-4 z-100 selection:bg-transparent">
 
         {/* Left — paw */}
         <div className="flex-1 flex items-center">
           <button
             onClick={() => { setPawOpen(!pawOpen); setTrayOpen(false) }}
-            className="w-9 h-9 rounded-lg hover:bg-white/20 transition flex items-center justify-center"
+            className={`w-9 h-9 rounded-lg transition flex items-center justify-center outline-none ${pawOpen ? "bg-white/20" : "hover:bg-white/20"
+              }`}
           >
-            <FaPaw className="text-white text-lg opacity-80" />
+            <FaPaw className={`text-lg transition-colors ${pawOpen ? "text-white opacity-100" : "text-white opacity-80"}`} />
           </button>
         </div>
 
@@ -42,27 +60,32 @@ export default function Taskbar() {
             const isOpen = !!win
             const isMinimized = win?.minimized
 
+            // Check if active for the subtle highlight
+            const maxZ = Math.max(...windows.map((w) => w.zIndex), 0)
+            const isFocused = isOpen && !isMinimized && win.zIndex === maxZ
+
             return (
               <div key={app.id} className="flex flex-col items-center gap-0.5">
+                <div className="w-1 h-1" /> {/* Top Spacer */}
                 <button
                   onClick={() => handleAppClick(app)}
-                  className={`w-9 h-9 rounded-lg transition flex items-center justify-center text-white text-base ${
-                    isOpen && !isMinimized
+                  className={`w-9 h-9 rounded-lg transition flex items-center justify-center text-white text-base outline-none ${isFocused
                       ? "bg-white/30"
-                      : "bg-white/10 hover:bg-white/25"
-                  }`}
+                      : isOpen
+                        ? "bg-white/10 hover:bg-white/25"
+                        : "hover:bg-white/10"
+                    }`}
                   title={app.title}
                 >
                   {app.icon}
                 </button>
                 {/* Dot indicator */}
-                <div className={`w-1 h-1 rounded-full transition-all duration-300 ${
-                  isOpen
+                <div className={`w-1 h-1 rounded-full transition-all duration-300 ${isOpen
                     ? isMinimized
                       ? "bg-white/40"
                       : "bg-white"
                     : "bg-transparent"
-                }`} />
+                  }`} />
               </div>
             )
           })}
