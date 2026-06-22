@@ -87,7 +87,7 @@ export default function FileExplorer() {
                 <div className="text-4xl text-slate-400 group-hover:text-purple-400 transition-colors">
                   <file.icon strokeWidth={1} />
                 </div>
-                <span className="text-xs text-center break-words w-full truncate px-1">
+                <span className="text-xs text-center wrap-break-word w-full truncate px-1">
                   {file.name}
                 </span>
               </motion.button>
