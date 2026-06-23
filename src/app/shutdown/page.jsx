@@ -19,22 +19,21 @@ export default function ShutdownScreen() {
   return (
     <div className="w-screen h-screen bg-[#070709] flex flex-col items-center justify-center overflow-hidden relative selection:bg-transparent">
 
-      {/* BACKGROUND WATERMARK: Static Muted Fade */}
+      {/* BACKGROUND WATERMARK */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        initial={{ opacity: 0.03 }} // <-- Hardlocks it to 3% right out of the gate
+        initial={{ opacity: 0.03 }}
         animate={{ opacity: isWaking ? 0 : 0.03 }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <FaPaw className="w-[40vw] h-[40vw] min-w-75 text-white" />
       </motion.div>
 
-      {/* FOREGROUND: Physics-based "Wake" Pill */}
+      {/* FOREGROUND */}
       <motion.button
         onClick={handleWake}
         disabled={isWaking}
 
-        // The Physics Settings
         initial={{ opacity: 1, y: 0, scale: 1 }}
         animate={{
           opacity: isWaking ? 0 : 1,

@@ -6,7 +6,6 @@ import {
   FiHardDrive, FiHome, FiImage, FiFileText 
 } from "react-icons/fi"
 
-// Mock Filesystem
 const files = [
   { id: 1, name: "Documents", type: "folder", parentId: null, icon: FiFolder },
   { id: 2, name: "Pictures", type: "folder", parentId: null, icon: FiFolder },

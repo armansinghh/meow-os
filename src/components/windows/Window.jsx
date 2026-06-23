@@ -103,9 +103,7 @@ export default function Window({ id, title, children, x, y, width, height, zInde
           </div>
         </div>
 
-        {/* =========================================
-            APP CONTENT AREA
-            ========================================= */}
+        {/* APP CONTENT AREA */}
         <div className="flex-1 overflow-hidden relative bg-transparent p-2">
           {children}
         </div>

@@ -1,7 +1,6 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
 
-// A neat little ASCII cat for the boot sequence
 const bootMessage = `
    /\\_/\\
   ( o.o )  Welcome to meowOS PawShell
@@ -24,31 +23,26 @@ export default function PawShell() {
   ])
   const [input, setInput] = useState("")
   
-  // Command history for Up/Down arrow navigation
   const [commandHistory, setCommandHistory] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
 
-  // Auto-scroll to bottom on new output
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "auto" })
   }, [history])
 
-  // Ensure clicking anywhere in the terminal focuses the input
   const handleTerminalClick = () => {
     inputRef.current?.focus()
   }
 
   const handleKeyDown = (e) => {
-    // Command History Navigation
     if (e.key === "ArrowUp") {
       e.preventDefault()
       if (historyIndex < commandHistory.length - 1) {
         const newIndex = historyIndex + 1
         setHistoryIndex(newIndex)
-        // Read from the end of the array backwards
         setInput(commandHistory[commandHistory.length - 1 - newIndex])
       }
     } else if (e.key === "ArrowDown") {
@@ -72,7 +66,6 @@ export default function PawShell() {
     const trimmed = input.trim()
     const [cmd, ...args] = trimmed.split(" ")
 
-    // Save to command history for arrow key navigation
     setCommandHistory((prev) => [...prev, trimmed])
     setHistoryIndex(-1)
 

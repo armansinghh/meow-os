@@ -63,9 +63,7 @@ export default function PawMenu({ onClose }) {
       transition={{ duration: 0.15, ease: "easeOut" }}
       className="absolute bottom-16 left-4 w-80 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl flex flex-col text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-110"
     >
-      {/* =========================================
-          SEARCH BAR AREA
-          ========================================= */}
+      {/* SEARCH BAR AREA */}
       <div className="p-4 pb-2">
         <div className="relative flex items-center">
           <FiSearch className="absolute left-3 text-white/50 text-sm" />
@@ -81,9 +79,7 @@ export default function PawMenu({ onClose }) {
         </div>
       </div>
 
-      {/* =========================================
-          APP GRID
-          ========================================= */}
+      {/* APP GRID */}
       <div className="p-4 pt-2 min-h-55">
         <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3 px-1">
           Pinned Apps
@@ -114,12 +110,9 @@ export default function PawMenu({ onClose }) {
         )}
       </div>
 
-      {/* =========================================
-          BOTTOM PROFILE & POWER BAR
-          ========================================= */}
+      {/* BOTTOM PROFILE & POWER BAR */}
       <div className="p-4 bg-black/40 border-t border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* Replaced purple with a clean translucent white */}
           <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shadow-sm">
             <FaCat className="text-white/70 text-sm" />
           </div>

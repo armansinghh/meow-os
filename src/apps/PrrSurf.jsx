@@ -37,10 +37,7 @@ export default function PrrSurf() {
             {/* 2. MAIN CONTENT */}
             <div className="flex-1 w-full h-full relative">
                 {url === "" ? (
-                    /* DASHBOARD */
                     <div className="flex flex-col items-center justify-center h-full animate-in fade-in duration-500">
-
-                        {/* PrrSearch Title with Google Colors */}
                         <h1 className="text-7xl font-black mb-12 tracking-tighter">
                             <span className="text-[#4285F4]">P</span>
                             <span className="text-[#EA4335]">r</span>

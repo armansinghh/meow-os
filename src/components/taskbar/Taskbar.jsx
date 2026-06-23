@@ -59,8 +59,6 @@ export default function Taskbar() {
             const win = windows.find((w) => w.id === app.id)
             const isOpen = !!win
             const isMinimized = win?.minimized
-
-            // Check if active for the subtle highlight
             const maxZ = Math.max(...windows.map((w) => w.zIndex), 0)
             const isFocused = isOpen && !isMinimized && win.zIndex === maxZ
 

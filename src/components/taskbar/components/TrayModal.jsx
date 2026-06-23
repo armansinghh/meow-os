@@ -1,7 +1,7 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import { LuWifi, LuBatteryMedium, LuBluetooth, LuMoon, LuSun, LuVolume2 } from "react-icons/lu"
+import { LuWifi, LuBatteryFull, LuBluetooth, LuMoon, LuSun, LuVolume2 } from "react-icons/lu"
 
 export default function TrayModal({ onClose }) {
   const modalRef = useRef(null)
@@ -29,9 +29,7 @@ export default function TrayModal({ onClose }) {
       transition={{ duration: 0.15, ease: "easeOut" }}
       className="absolute bottom-16 right-4 w-72 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 flex flex-col gap-5 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-110"
     >
-      {/* =========================================
-          QUICK ACTIONS GRID
-          ========================================= */}
+      {/* QUICK ACTIONS GRID */}
       <div className="grid grid-cols-3 gap-3">
         {/* WiFi */}
         <button 
@@ -74,9 +72,7 @@ export default function TrayModal({ onClose }) {
         </button>
       </div>
 
-      {/* =========================================
-          SLIDERS (Brightness & Volume)
-          ========================================= */}
+      {/* SLIDERS (Brightness & Volume) */}
       <div className="flex flex-col gap-4 bg-black/30 p-4 rounded-xl border border-white/10 shadow-inner">
         
         {/* Brightness */}
@@ -98,13 +94,11 @@ export default function TrayModal({ onClose }) {
         </div>
       </div>
 
-      {/* =========================================
-          FOOTER (Battery Status)
-          ========================================= */}
+      {/* FOOTER */}
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2 text-white/80">
-          <LuBatteryMedium className="text-white" size={18} strokeWidth={2} />
-          <span className="text-xs font-semibold tracking-wide">64%</span>
+          <LuBatteryFull className="text-white" size={18} strokeWidth={2} />
+          <span className="text-xs font-semibold tracking-wide">97%</span>
         </div>
         
         <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">

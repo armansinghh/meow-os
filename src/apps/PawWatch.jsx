@@ -86,9 +86,7 @@ export default function PawWatch() {
           <div className="absolute w-3 h-3 bg-pink-400 rounded-full z-40 border-2 border-white shadow-sm" />
         </div>
 
-        {/* =========================================
-            THE DIGITAL READOUT (Moved to Right)
-            ========================================= */}
+        {/* THE DIGITAL READOUT */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left shrink-0">
           <div className="flex items-baseline gap-2 text-slate-800">
             <span className="text-6xl sm:text-7xl font-bold tracking-tight tabular-nums">
