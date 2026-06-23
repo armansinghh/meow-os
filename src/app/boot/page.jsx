@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { FaPaw } from "react-icons/fa6"
 
 const bootLines = [
   "[    0.000000] Booting meowOS kernel v1.0.0-meow...",
@@ -15,17 +16,13 @@ const bootLines = [
   "[    0.000312] Starting window manager...",
   "[  OK  ] Started meowOS Session Manager.",
   "[  OK  ] Reached target Cat Desktop.",
-  "",
-  "Welcome to meowOS. 🐾",
 ]
 
 export default function BootScreen() {
   const router = useRouter()
   const [lines, setLines] = useState([])
-  const [currentLine, setCurrentLine] = useState("")
   const [lineIndex, setLineIndex] = useState(0)
-  const [charIndex, setCharIndex] = useState(0)
-  const [done, setDone] = useState(false)
+  const [phase, setPhase] = useState("booting")
   const [started, setStarted] = useState(false)
 
   useEffect(() => {
@@ -34,49 +31,59 @@ export default function BootScreen() {
   }, [])
 
   useEffect(() => {
-    if (!started) return
+    if (!started || phase !== "booting") return
 
     if (lineIndex >= bootLines.length) {
-      setDone(true)
-      setTimeout(() => {
-        sessionStorage.setItem("meowos-booted", "true")
-        router.push("/")
-      }, 800)
+      setTimeout(() => setPhase("logo"), 400)
       return
     }
 
-    const line = bootLines[lineIndex]
+    const timeout = setTimeout(() => {
+      setLines((prev) => [...prev, bootLines[lineIndex]])
+      setLineIndex((prev) => prev + 1)
+    }, 120)
 
-    if (charIndex < line.length) {
-      const timeout = setTimeout(() => {
-        setCurrentLine((prev) => prev + line[charIndex])
-        setCharIndex((prev) => prev + 1)
-      }, 8)
-      return () => clearTimeout(timeout)
-    } else {
-      const timeout = setTimeout(() => {
-        setLines((prev) => [...prev, line])
-        setCurrentLine("")
-        setCharIndex(0)
-        setLineIndex((prev) => prev + 1)
-      }, 40)
-      return () => clearTimeout(timeout)
+    return () => clearTimeout(timeout)
+  }, [lineIndex, started, phase])
+
+  useEffect(() => {
+    if (phase === "logo") {
+      const timer = setTimeout(() => setPhase("exiting"), 1800)
+      return () => clearTimeout(timer)
     }
-  }, [lineIndex, charIndex, started])
+    if (phase === "exiting") {
+      sessionStorage.setItem("meowos-booted", "true")
+      router.push("/")
+    }
+  }, [phase, router])
 
   return (
-    <div className="w-screen h-screen bg-black flex items-center justify-center p-8 font-mono text-sm">
-      <div className="flex flex-col gap-0.5 w-fit">
-        {lines.map((line, i) => (
-          <div key={i} className={line.startsWith("[  OK") ? "text-green-400" : "text-gray-300"}>
-            {line}
-          </div>
-        ))}
-        <div className="text-gray-300 flex items-center gap-0.5">
-          {currentLine}
-          {!done && <span className="animate-pulse">█</span>}
+    <div className={`w-screen h-screen bg-black flex items-center justify-center overflow-hidden transition-opacity duration-1000 ease-in-out ${phase === "exiting" ? "opacity-0" : "opacity-100"}`}>
+
+      {/* PHASE 1: Boot text */}
+      {phase === "booting" && (
+        <div className="w-fit flex flex-col gap-0.5 font-mono text-sm">
+          {lines.map((line, i) => (
+            <div key={i} className={line.startsWith("[  OK") ? "text-green-400" : "text-gray-300"}>
+              {line}
+            </div>
+          ))}
+          {lineIndex < bootLines.length && (
+            <span className="animate-pulse text-gray-300">█</span>
+          )}
         </div>
-      </div>
+      )}
+
+      {/* PHASE 2: Logo splash */}
+      {phase === "logo" && (
+        <div className="flex flex-col items-center justify-center animate-in fade-in zoom-in-95 duration-700">
+          <FaPaw className="text-white mb-4 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]" style={{ fontSize: "8rem" }} />
+          <p className="text-white/40 font-mono text-xs tracking-[0.3em] uppercase">
+            meowOS
+          </p>
+        </div>
+      )}
+
     </div>
   )
 }
