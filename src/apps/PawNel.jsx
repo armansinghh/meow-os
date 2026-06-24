@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { FiImage, FiInfo, FiMonitor, FiCheck } from "react-icons/fi"
+import { FiImage, FiInfo, FiMonitor, FiCheck, FiLink } from "react-icons/fi"
 import { IoPaw } from "react-icons/io5"
 import useWindowStore from "@/store/useWindowStore"
 
@@ -17,11 +17,6 @@ const wallpapers = [
     url: "https://cdn.pixabay.com/photo/2018/05/09/21/47/cat-3386220_1280.jpg",
   },
   {
-    id: "cats3",
-    label: "Kitten",
-    url: "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?q=80&w=1092",
-  },
-  {
     id: "cats4",
     label: "Sleepy Cats",
     url: "https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?q=80&w=1087",
@@ -31,14 +26,39 @@ const wallpapers = [
 export default function PawNel() {
   const { wallpaper, setWallpaper } = useWindowStore()
   const [activeTab, setActiveTab] = useState("appearance")
+  
+  const [customUrl, setCustomUrl] = useState("")
+  const [isTestingUrl, setIsTestingUrl] = useState(false)
+  const [urlError, setUrlError] = useState("")
 
-  // Fallback to the first wallpaper if the store is empty
   const activeWallpaper = wallpaper || wallpapers[0].url
 
   const tabs = [
     { id: "appearance", label: "Paw-sonalization", icon: FiImage },
     { id: "about", label: "About Meow OS", icon: FiInfo },
   ]
+
+  const handleCustomWallpaperSubmit = (e) => {
+    e.preventDefault()
+    if (!customUrl.trim()) return
+
+    setIsTestingUrl(true)
+    setUrlError("")
+
+    const img = new Image()
+    img.src = customUrl
+
+    img.onload = () => {
+      setWallpaper(customUrl)
+      setCustomUrl("")
+      setIsTestingUrl(false)
+    }
+
+    img.onerror = () => {
+      setUrlError("Invalid image link. Please make sure it ends in .png, .jpg, etc.")
+      setIsTestingUrl(false)
+    }
+  }
 
   return (
     <div className="flex h-full bg-[#fcfbf9] text-slate-800 font-sans overflow-hidden selection:bg-purple-200">
@@ -96,11 +116,11 @@ export default function PawNel() {
               </div>
             </div>
 
-            {/* Wallpaper Grid */}
+            {/* Default Wallpaper Grid */}
             <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-4 border-b border-slate-200 pb-2">
               Choose a background
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
               {wallpapers.map((wp) => {
                 const isActive = activeWallpaper === wp.url
                 
@@ -108,23 +128,20 @@ export default function PawNel() {
                   <button
                     key={wp.id}
                     onClick={() => setWallpaper(wp.url)}
-                    className="relative group rounded-xl overflow-hidden aspect-video outline-none"
+                    className="relative group rounded-xl overflow-hidden aspect-video outline-none shadow-sm border border-slate-200"
                   >
-                    {/* The Image */}
                     <img
                       src={wp.url}
                       alt={wp.label}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     
-                    {/* Label Overlay */}
                     <div className="absolute inset-x-0 bottom-0 p-2 bg-linear-to-t from-black/70 to-transparent">
                       <span className="text-xs text-white font-medium drop-shadow-md">
                         {wp.label}
                       </span>
                     </div>
                     
-                    {/* Active Checkmark Badge */}
                     {isActive && (
                       <motion.div 
                         initial={{ scale: 0 }}
@@ -138,6 +155,45 @@ export default function PawNel() {
                 )
               })}
             </div>
+
+            {/* Custom URL Input Section */}
+            <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-4 border-b border-slate-200 pb-2">
+              Or Use Custom Image Link
+            </h3>
+            <form onSubmit={handleCustomWallpaperSubmit} className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <FiLink className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="url"
+                    placeholder="https://example.com/my-cat.png"
+                    value={customUrl}
+                    onChange={(e) => {
+                      setCustomUrl(e.target.value)
+                      if (urlError) setUrlError("")
+                    }}
+                    className="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all shadow-sm"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={isTestingUrl || !customUrl.trim()}
+                  className="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-25 flex justify-center"
+                >
+                  {isTestingUrl ? (
+                    <span className="animate-pulse">Checking...</span>
+                  ) : (
+                    "Apply"
+                  )}
+                </button>
+              </div>
+              {urlError && (
+                <span className="text-xs text-red-500 font-medium ml-1">
+                  {urlError}
+                </span>
+              )}
+            </form>
+
           </motion.div>
         )}
 
