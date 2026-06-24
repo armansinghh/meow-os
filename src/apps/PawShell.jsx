@@ -25,6 +25,7 @@ export default function PawShell() {
   
   const [commandHistory, setCommandHistory] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
+  const [matrixMode, setMatrixMode] = useState(false)
   
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
@@ -60,7 +61,7 @@ export default function PawShell() {
     }
   }
 
-  const executeCommand = () => {
+  const executeCommand = async () => {
     if (!input.trim()) return
 
     const trimmed = input.trim()
@@ -69,12 +70,36 @@ export default function PawShell() {
     setCommandHistory((prev) => [...prev, trimmed])
     setHistoryIndex(-1)
 
+    setHistory((prev) => [...prev, { type: "input", text: trimmed }])
+    setInput("")
+
     let output
+
     if (trimmed === "clear") {
       setHistory([])
-      setInput("")
       return
-    } else if (commands[cmd]) {
+    } 
+    else if (trimmed === "sudo rm -rf /") {
+      output = "Nice try, human. Cats have 9 lives. 🐈"
+    } 
+    else if (trimmed === "matrix") {
+      setMatrixMode((prev) => !prev)
+      output = matrixMode 
+        ? "Exiting the meow-trix... 🐾" 
+        : "Wake up, Neo... The litter box is calling. 🐈‍⬛"
+    } 
+    else if (trimmed === "pspsps") {
+      try {
+        const res = await fetch("https://catfact.ninja/fact")
+        if (!res.ok) throw new Error()
+        const data = await res.json()
+        output = `*purr* Did you know? ${data.fact}`
+      } catch {
+        output = "*runs away and hides under the sofa*"
+      }
+    } 
+    // --- STANDARD COMMANDS ---
+    else if (commands[cmd]) {
       output = typeof commands[cmd] === "function"
         ? commands[cmd](args)
         : commands[cmd]
@@ -82,21 +107,21 @@ export default function PawShell() {
       output = `meowOS: command not found: ${cmd}`
     }
 
-    setHistory((prev) => [
-      ...prev,
-      { type: "input", text: trimmed },
-      { type: "output", text: output },
-    ])
-    setInput("")
+    setHistory((prev) => [...prev, { type: "output", text: output }])
   }
+
+  const textColor = matrixMode ? "text-emerald-400" : "text-[#cdd6f4]"
+  const promptColor = matrixMode ? "text-emerald-500" : "text-[#a6e3a1]"
+  const symbolColor = matrixMode ? "text-emerald-600" : "text-[#89b4fa]"
+  const caretColor = matrixMode ? "caret-emerald-400" : "caret-[#f38ba8]"
 
   return (
     <div 
-      className="flex flex-col h-full bg-[#1e1e2e] text-[#cdd6f4] p-4 font-mono text-sm cursor-text overflow-hidden rounded-lg"
+      className={`flex flex-col h-full bg-[#1e1e2e] p-4 font-mono text-sm cursor-text overflow-hidden rounded-lg transition-colors duration-500 ${textColor}`}
       onClick={handleTerminalClick}
     >
-      {/* Title Bar Simulation (Optional, blends with window) */}
-      <div className="text-center text-[#6c7086] text-xs mb-4 pb-2 border-b border-[#313244] uppercase tracking-widest select-none">
+      {/* Title Bar Simulation */}
+      <div className={`text-center text-xs mb-4 pb-2 border-b uppercase tracking-widest select-none transition-colors duration-500 ${matrixMode ? "border-emerald-900 text-emerald-700" : "border-[#313244] text-[#6c7086]"}`}>
         bash — 80x24
       </div>
 
@@ -106,12 +131,14 @@ export default function PawShell() {
           <div key={i} className="whitespace-pre-wrap wrap-break-word">
             {line.type === "input" ? (
               <div className="flex gap-2">
-                <span className="text-[#a6e3a1] font-bold">guest@meowOS</span>
-                <span className="text-[#89b4fa] font-bold">~ $</span>
-                <span className="text-white">{line.text}</span>
+                <span className={`${promptColor} font-bold`}>guest@meowOS</span>
+                <span className={`${symbolColor} font-bold`}>~ $</span>
+                <span>{line.text}</span>
               </div>
             ) : (
-              <div className="text-[#bac2de]">{line.text}</div>
+              <div className={matrixMode ? "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]" : "text-[#bac2de]"}>
+                {line.text}
+              </div>
             )}
           </div>
         ))}
@@ -120,15 +147,15 @@ export default function PawShell() {
 
       {/* Input Line */}
       <div className="flex items-start gap-2 mt-1 shrink-0">
-        <span className="text-[#a6e3a1] font-bold">guest@meowOS</span>
-        <span className="text-[#89b4fa] font-bold">~ $</span>
+        <span className={`${promptColor} font-bold`}>guest@meowOS</span>
+        <span className={`${symbolColor} font-bold`}>~ $</span>
         <input
           ref={inputRef}
           autoFocus
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent text-white outline-none caret-[#f38ba8]"
+          className={`flex-1 bg-transparent outline-none ${textColor} ${caretColor}`}
           spellCheck="false"
           autoComplete="off"
         />
