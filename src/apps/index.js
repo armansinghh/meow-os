@@ -4,7 +4,8 @@ import PawWatch from "./PawWatch"
 import Pawnel from "./PawNel"
 import Catalog from "./Catalog"
 import PrrSurf from "./PrrSurf"
-import { FaPenToSquare, FaTerminal, FaClock, FaGear, FaFolder, FaGlobe } from "react-icons/fa6"
+import HoomanInfo from "./HoomanInfo"
+import { FaPenToSquare, FaTerminal, FaClock, FaGear, FaFolder, FaGlobe, FaCat } from "react-icons/fa6"
 
 const apps = [
   { id: "meowpad", title: "MeowPad", icon: <FaPenToSquare />, component: MeowPad },
@@ -13,6 +14,7 @@ const apps = [
   { id: "pawnel", title: "Control Paw-nel", icon: <FaGear />, component: Pawnel },
   { id: "catalog", title: "File Cat-alog", icon: <FaFolder />, component: Catalog },
   { id: "prrsurf", title: "PrrSurf Browser", icon: <FaGlobe />, component: PrrSurf },
+  { id: "hooman", title: "Hooman Info", icon: <FaCat />, component: HoomanInfo },
 ]
 
 export default apps

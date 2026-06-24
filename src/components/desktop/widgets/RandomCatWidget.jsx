@@ -81,6 +81,7 @@ export default function RandomCatWidget() {
           <img
             src={imageUrl}
             alt="Random cat"
+            draggable="false"
             onLoad={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)} 
             className="w-full h-full object-cover transition-opacity duration-300"
