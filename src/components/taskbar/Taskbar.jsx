@@ -34,13 +34,23 @@ export default function Taskbar() {
   }
 
   return (
-    <>
+    <div className="absolute inset-x-0 bottom-0 z-50 pointer-events-none">
+      
       <AnimatePresence>
-        {trayOpen && <TrayModal key="tray" onClose={() => setTrayOpen(false)} />}
-        {pawOpen && <PawMenu key="paw" onClose={() => setPawOpen(false)} />}
+        {/* pointer-events-auto allows the modals to be clicked */}
+        {trayOpen && (
+          <div className="pointer-events-auto">
+            <TrayModal key="tray" onClose={() => setTrayOpen(false)} />
+          </div>
+        )}
+        {pawOpen && (
+          <div className="pointer-events-auto">
+            <PawMenu key="paw" onClose={() => setPawOpen(false)} />
+          </div>
+        )}
       </AnimatePresence>
 
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-black/40 backdrop-blur-md border-t border-white/10 flex items-center px-4 z-100 selection:bg-transparent">
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-black/40 backdrop-blur-md border-t border-white/10 flex items-center px-4 pointer-events-auto selection:bg-transparent">
 
         {/* Left — paw */}
         <div className="flex-1 flex items-center">
@@ -95,6 +105,6 @@ export default function Taskbar() {
         </div>
 
       </div>
-    </>
+    </div>
   )
 }

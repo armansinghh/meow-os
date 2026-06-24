@@ -4,11 +4,17 @@ import useWindowStore from "@/store/useWindowStore"
 import Window from "@/components/windows/Window"
 import Taskbar from "@/components/taskbar/Taskbar"
 import { AnimatePresence } from "framer-motion"
+import DraggableWidget from "./widgets/DraggableWidget"
+import CatFactWidget from "./widgets/CatFactWidget"
+import ClockWidget from "./widgets/ClockWidget"
+import StickyNoteWidget from "./widgets/StickyNoteWidget"
+import RandomCatWidget from "./widgets/RandomCatWidget"
 
 export default function Desktop() {
   const windows = useWindowStore((state) => state.windows)
   const wallpaper = useWindowStore((state) => state.wallpaper)
   const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -16,14 +22,37 @@ export default function Desktop() {
   return (
     <div
       className="w-screen h-screen relative overflow-hidden bg-cover bg-center transition-all duration-700 ease-in-out"
-      style={{ 
+      style={{
         backgroundImage: mounted ? `url(${wallpaper})` : "none",
         backgroundColor: "#1e1e2e",
       }}
     >
+      {/* LAYER 0: Background Darkening Overlay */}
       <div className="absolute inset-0 bg-black/20 pointer-events-none z-0" />
 
-      <div className="relative z-10 w-full h-full">
+      {/* LAYER 1: Widgets*/}
+      {mounted && (
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <DraggableWidget id="clock-v2" defaultX={20} defaultY={20}>
+            <ClockWidget />
+          </DraggableWidget>
+
+          <DraggableWidget id="sticky-v2" defaultX={window.innerWidth - 276} defaultY={20}>
+            <StickyNoteWidget />
+          </DraggableWidget>
+
+          <DraggableWidget id="randomcat-v2" defaultX={window.innerWidth - 276} defaultY={208}>
+            <RandomCatWidget />
+          </DraggableWidget>
+
+          <DraggableWidget id="catfact-v2" defaultX={window.innerWidth - 276} defaultY={458}>
+            <CatFactWidget />
+          </DraggableWidget>
+        </div>
+      )}
+
+      {/* LAYER 2: App Windows -*/}
+      <div className="absolute inset-0 z-30 pointer-events-none *:pointer-events-auto">
         <AnimatePresence>
           {windows
             .filter((w) => !w.minimized)
@@ -45,7 +74,8 @@ export default function Desktop() {
         </AnimatePresence>
       </div>
 
-      <div className="relative z-50">
+      {/* LAYER 3: Taskbar*/}
+      <div className="absolute inset-x-0 bottom-0 z-50 pointer-events-none *:pointer-events-auto">
         <Taskbar />
       </div>
     </div>
