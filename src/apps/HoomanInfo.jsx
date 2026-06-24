@@ -1,11 +1,11 @@
 "use client"
-import { FiGithub, FiLinkedin, FiMail, FiMapPin, FiBriefcase, FiExternalLink, FiCode, FiCpu, FiLayout, FiPenTool } from "react-icons/fi"
+import { FiGithub, FiLinkedin, FiGlobe, FiMapPin, FiBriefcase, FiExternalLink, FiCode, FiCpu, FiLayout, FiPenTool } from "react-icons/fi"
 
 export default function HoomanInfo() {
   const socials = [
     { name: "GitHub", icon: FiGithub, url: "https://github.com/armansinghh", color: "hover:text-white hover:bg-slate-800" },
     { name: "LinkedIn", icon: FiLinkedin, url: "https://linkedin.com/in/armansinghh", color: "hover:text-white hover:bg-blue-600" },
-    { name: "Email", icon: FiMail, url: "mailto:armansingh6692@gmail.com", color: "hover:text-white hover:bg-rose-500" },
+    { name: "Portfolio", icon: FiGlobe, url: "https://armansingh.me", color: "hover:text-white hover:bg-emerald-500" },
   ]
 
   const projects = [
