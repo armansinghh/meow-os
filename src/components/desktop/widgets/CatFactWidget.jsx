@@ -60,7 +60,7 @@ export default function CatFactWidget() {
     return (
         <div className="w-64 bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col gap-3 text-white select-none shadow-lg">
             {/* Header */}
-            <div className="flex items-center gap-2 text-xs font-bold text-white/40 uppercase tracking-widest">
+            <div className="flex items-center gap-2 text-xs font-bold text-white/40 uppercase tracking-widest border-b border-white/10 pb-2">
                 <FaCat className="text-white/50" />
                 Cat Fact
             </div>

@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { IoPaw } from "react-icons/io5"
+import { FiSun, FiMoon, FiSunrise, FiSunset } from "react-icons/fi"
 
 export default function ClockWidget() {
   const [time, setTime] = useState(null)
@@ -19,6 +19,15 @@ export default function ClockWidget() {
   const minutes = time.getMinutes().toString().padStart(2, '0')
   const greeting = hours < 12 ? "Good morning" : hours < 18 ? "Good afternoon" : "Good evening"
   const displayHours = (hours % 12 || 12).toString() 
+
+  let TimeIcon = FiMoon
+  if (hours >= 5 && hours < 8) {
+    TimeIcon = FiSunrise // 5:00 AM - 7:59 AM
+  } else if (hours >= 8 && hours < 17) {
+    TimeIcon = FiSun     // 8:00 AM - 4:59 PM
+  } else if (hours >= 17 && hours < 20) {
+    TimeIcon = FiSunset  // 5:00 PM - 7:59 PM
+  }
 
   return (
     <div className="w-64 bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-4 text-white select-none shadow-lg flex flex-col justify-between">
@@ -42,9 +51,9 @@ export default function ClockWidget() {
           </div>
         </div>
         
-        {/* Static Paw Icon */}
-        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5 mt-1">
-            <IoPaw className="text-white/30" size={14} />
+        {/* Dynamic Time Icon */}
+        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5 mt-1 transition-colors duration-500">
+            <TimeIcon className="text-white/40" size={14} strokeWidth={2.5} />
         </div>
       </div>
 
