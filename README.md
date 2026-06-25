@@ -1,56 +1,56 @@
-# 🐾 meowOS
+# meowOS
 
-A browser-based desktop operating system with a cat theme.
+A browser based desktop operating system with a cat theme.
 
-**Live:** [meowos-web.vercel.app](https://meowos-web.vercel.app) · **Repo:** [github.com/armansinghh/meow-os](https://github.com/armansinghh/meow-os)
+**Live:** [meowos-web.vercel.app](https://meowos-web.vercel.app)
 
 ---
 
-## What it is
+## what it is
 
 meowOS is a fully functional desktop environment running in the browser. It has a real window manager, multiple apps, a taskbar, a boot sequence, and persistent settings and it's all themed around cats.
 
 ---
 
-## Apps
+## available apps
 
 | App | Description |
 |---|---|
-| **MeowPad** | Distraction-free text editor with autosave and character limit |
-| **PawShell** | Terminal emulator with command history, Easter eggs, and a matrix mode |
-| **PawWatch** | Analog clock with cat ears and a digital readout |
-| **Control Paw-nel** | Settings panel — change wallpapers, add custom image URLs |
-| **File Cat-alog** | File explorer with sidebar navigation |
-| **PrrSurf** | In-OS browser with a cat-themed home screen |
-| **Hooman Info** | About page / portfolio card |
+| MeowPad | text editor with autosave and character limit |
+| PawShell | terminal emulator with command history and easter eggs |
+| PawWatch | analog clock with cat ears |
+| Control Paw-nel | settings panel to change wallpapers and sys info |
+| File Cat-alog | file explorer with sidebar navigation |
+| PrrSurf | browser with pinned working sites |
+| Hooman Info | about page for the developer |
 
 ---
 
-## Desktop Widgets
+## desktop widgets
 
-Draggable, position-persistent widgets that live on the desktop:
+Draggable, position persistent widgets that are on desktop:
 
-- **Clock Widget** — time, date, greeting, and a dynamic day/night icon
-- **Sticky Note** — quick notes saved to localStorage
-- **Random Cat** — pulls a random cat image from The Cat API
-- **Cat Fact** — daily cat facts from catfact.ninja
-
----
-
-## Features
-
-- **Boot screen** — line-by-line kernel text followed by a logo splash, then routes to the desktop
-- **Shutdown screen** — sleep state with a glowing wake button
-- **Window manager** — open, close, focus, minimize, maximize with smooth animations
-- **Taskbar** — pinned app icons with open/focused dot indicators, PawMenu, and system tray
-- **PawMenu** — app launcher with live search and shutdown button
-- **System tray** — WiFi/Bluetooth/Catnap toggles, brightness and volume sliders
-- **Wallpaper picker** — three built-in cat wallpapers plus custom URL input with validation
-- **localStorage persistence** — wallpaper choice and widget positions survive refreshes
+1. Clock Widget - time, date, greeting, and a dynamic day/night icon
+2. Sticky Note - quick notes (saved to localStorage)
+3. Random Cat - pulls a random cat image from The Cat API
+4. Cat Fact - daily cat facts from catfact.ninja
 
 ---
 
-## Tech Stack
+## features
+
+1. Boot screen - line by line kernel text followed by a logo, then routes to the desktop
+2. Shutdown screen - sleep state with a glowing wake button
+3. Window manager - open, close, focus, minimize, maximize with smooth animations
+4. Taskbar - pinned app icons with open/focused dot indicators, PawMenu, and system tray
+5. PawMenu - app launcher with search and shutdown button
+6. System tray - WiFi/Bluetooth/Catnap toggles, working brightness and volume sliders
+7. Wallpaper picker - three built in cat wallpapers + custom URL wallpaper with link validation
+8. localStorage persistence - wallpaper choice and widget positions survive refreshes
+
+---
+
+## tech Stack
 
 | Layer | Library |
 |---|---|
@@ -63,7 +63,7 @@ Draggable, position-persistent widgets that live on the desktop:
 
 ---
 
-## Running Locally
+## running locally
 
 ```bash
 git clone https://github.com/armansinghh/meow-os
@@ -72,27 +72,26 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The app will redirect to the shutdown screen on first load — click to boot.
+Open [http://localhost:3000](http://localhost:3000). 
+The app will redirect to the shutdown screen, click to boot.
 
 ---
 
-## Project Structure
+## project structure
 
 ```
 src/
 ├── app/
-│   ├── page.jsx          # Desktop entry + boot check
-│   ├── boot/page.jsx     # Boot sequence
-│   └── shutdown/page.jsx # Shutdown / sleep screen
-├── apps/                 # Individual app components
+│   ├── page.jsx          # desktop route + boot check
+│   ├── boot/page.jsx     # boot sequence
+│   └── shutdown/page.jsx # shutdown / sleep screen
+├── apps/                 # individual apps
 ├── components/
-│   ├── desktop/          # Desktop, DraggableWidget, widgets
-│   ├── taskbar/          # Taskbar, PawMenu, TrayModal, SystemTray
-│   └── windows/          # Window chrome (drag, resize, controls)
+│   ├── desktop/          # desktop, widgets
+│   ├── viewers/          # txt and image file viewers
+│   └── windows/          # window manager
 └── store/
-    └── useWindowStore.js # Zustand store (windows + wallpaper)
+    └── useWindowStore.js # zustand store (windows + wallpaper)
 ```
 
 ---
-
-Made with ❤️ by [Arman Singh](https://github.com/armansinghh)
