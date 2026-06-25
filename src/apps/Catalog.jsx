@@ -13,7 +13,7 @@ const files = [
   { id: "documents", name: "Documents", type: "folder", parentId: "home", icon: FiFolder },
   { id: "pictures", name: "Pictures", type: "folder", parentId: "home", icon: FiFolder },
   { id: "design-pdf", name: "meowOS_Design.txt", type: "file", parentId: "documents", icon: FiFileText, content: "meowOS Architecture v1.0\n\n- Kernel: Next.js\n- Engine: Pure Feline Energy\n- Status: 100% Certified Premium Web OS." },
-  { id: "cat-photo", name: "Cat_Photo.png", type: "file", parentId: "pictures", icon: FiImage, content: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80" },
+  { id: "cat-photo", name: "Buddy.png", type: "file", parentId: "pictures", icon: FiImage, content: "https://images.unsplash.com/photo-1450778869180-41d0601e046e?q=80" },
   { id: "notes-txt", name: "Notes.txt", type: "file", parentId: "documents", icon: FiFileText, content: "Buy list:\n1. Premium Salmon Treats\n2. Catnip (organic)\n3. Delete windows system folder" },
   { id: "sys-logs", name: "System Logs", type: "folder", parentId: "system", icon: FiFolder },
   { id: "kernel-config", name: "kernel_conf.sys", type: "file", parentId: "system", icon: FiFileText, content: "BOOT_MODE=PURR\nMAX_LIVES=9\nLITTER_BOX_STATUS=CLEAN" },

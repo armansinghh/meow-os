@@ -6,7 +6,7 @@ const useWindowStore = create(
     (set) => ({
       windows: [],
       wallpaper:
-        "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80",
+        "https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?q=80&w=1087",
 
       setWallpaper: (url) => set({ wallpaper: url }),
 

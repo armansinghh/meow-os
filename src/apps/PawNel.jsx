@@ -8,8 +8,8 @@ import useWindowStore from "@/store/useWindowStore"
 const wallpapers = [
   {
     id: "cats1",
-    label: "Cozy Cat",
-    url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80",
+    label: "Sleepy Cats",
+    url: "https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?q=80&w=1087",
   },
   {
     id: "cats2",
@@ -18,8 +18,8 @@ const wallpapers = [
   },
   {
     id: "cats4",
-    label: "Sleepy Cats",
-    url: "https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?q=80&w=1087",
+    label: "Cozy Cat",
+    url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80",
   },
 ]
 
